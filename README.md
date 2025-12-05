@@ -60,4 +60,35 @@ Place this under `/* USER CODE BEGIN Includes */`:
 /* Global variables */
 SX1278_hw_t SX1278_hw;
 SX1278_t SX1278;
+```  <-- BẠN ĐANG THIẾU DÒNG NÀY ĐỂ KẾT THÚC PHẦN 1
 
+### 2. Initialization
+
+Place this inside the `main()` function, before the `while(1)` loop:
+
+```c
+/* Hardware pin configuration for the library */
+SX1278_hw.dio0.port = GPIOB;
+SX1278_hw.dio0.pin = GPIO_PIN_1;
+SX1278_hw.nss.port = GPIOA;
+SX1278_hw.nss.pin = GPIO_PIN_4;
+SX1278_hw.reset.port = GPIOB;
+SX1278_hw.reset.pin = GPIO_PIN_0;
+SX1278_hw.spi = &hspi1; // Ensure hspi1 is initialized before this
+
+SX1278.hw = &SX1278_hw;
+
+/* Initialize LoRa Module */
+// Frequency: 433MHz, Power: 17dBm, SF: 7, BW: 125kHz
+printf("Configuring LoRa Module...\r\n");
+SX1278_init(&SX1278, 433000000, SX1278_POWER_17DBM, SX1278_LORA_SF_7,
+            SX1278_LORA_BW_125KHZ, SX1278_LORA_CR_4_5, SX1278_LORA_CRC_EN, 10);
+
+/* Check SPI Connection */
+uint8_t ret = SX1278_SPIRead(&SX1278, 0x42); // Read version register
+if (ret == 0x12) {
+    printf("LoRa module OK! Version: 0x%02X\r\n", ret);
+} else {
+    printf("LoRa Connection Error! Read: 0x%02X\r\n", ret);
+    Error_Handler(); // Stop if hardware error
+}
