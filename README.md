@@ -60,7 +60,7 @@ Place this under `/* USER CODE BEGIN Includes */`:
 /* Global variables */
 SX1278_hw_t SX1278_hw;
 SX1278_t SX1278;
-```  <-- BẠN ĐANG THIẾU DÒNG NÀY ĐỂ KẾT THÚC PHẦN 1
+```  
 
 ### 2. Initialization
 
