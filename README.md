@@ -96,9 +96,7 @@ if (ret == 0x12) {
 ### 3. Code for TRANSMITTER
 The module sends the string "Hello Master" along with an incrementing counter every second.
 
-C
-
-/* Inside the while(1) loop of main.c */
+```c
 char buffer[64];
 int message_length;
 int count = 0;
@@ -127,7 +125,7 @@ while (1) {
 ### 4.Code for RECEIVER
 The module constantly listens for incoming packets and prints the data.
 
-C
+```c
 SX1278_LoRaEntryRx(&SX1278, 16, 2000);
 
 uint8_t rx_buffer[64];
