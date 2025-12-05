@@ -129,7 +129,6 @@ while (1) {
 The module constantly listens for incoming packets and prints the data.
 
 C
-
 /* Before while(1), enable Continuous RX mode */
 SX1278_LoRaEntryRx(&SX1278, 16, 2000);
 
