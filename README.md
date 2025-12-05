@@ -67,7 +67,6 @@ SX1278_t SX1278;
 Place this inside the `main()` function, before the `while(1)` loop:
 
 ```c
-/* Hardware pin configuration for the library */
 SX1278_hw.dio0.port = GPIOB;
 SX1278_hw.dio0.pin = GPIO_PIN_1;
 SX1278_hw.nss.port = GPIOA;
