@@ -120,7 +120,7 @@ while (1) {
     }
 
     HAL_Delay(1000);
-      ```  
+```  
 
 ### 4.Code for RECEIVER
 The module constantly listens for incoming packets and prints the data.
