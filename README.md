@@ -92,3 +92,67 @@ if (ret == 0x12) {
     printf("LoRa Connection Error! Read: 0x%02X\r\n", ret);
     Error_Handler(); // Stop if hardware error
 }
+```  
+
+### 3. Code for TRANSMITTER
+The module sends the string "Hello Master" along with an incrementing counter every second.
+
+C
+
+/* Inside the while(1) loop of main.c */
+char buffer[64];
+int message_length;
+int count = 0;
+
+while (1) {
+    // 1. Prepare data
+    message_length = sprintf(buffer, "Hello Master %d", count++);
+
+    // 2. Set module to TX mode
+    SX1278_LoRaEntryTx(&SX1278, message_length, 2000);
+
+    // 3. Transmit packet
+    printf("Sending: %s\r\n", buffer);
+    int status = SX1278_LoRaTxPacket(&SX1278, (uint8_t *)buffer, message_length, 2000);
+
+    if (status > 0) {
+        printf("Sent successfully!\r\n");
+        HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13); // Toggle LED PC13
+    } else {
+        printf("Send failed (Timeout)\r\n");
+    }
+
+    HAL_Delay(1000);
+      ```  
+
+### 4.Code for RECEIVER
+The module constantly listens for incoming packets and prints the data.
+
+C
+
+/* Before while(1), enable Continuous RX mode */
+SX1278_LoRaEntryRx(&SX1278, 16, 2000);
+
+uint8_t rx_buffer[64];
+int rx_len;
+
+/* Inside the while(1) loop */
+while (1) {
+    // 1. Check if data is available
+    rx_len = SX1278_available(&SX1278);
+
+    if (rx_len > 0) {
+        // 2. Read data from buffer
+        SX1278_read(&SX1278, rx_buffer, rx_len);
+        
+        // Null-terminate the string for printing
+        rx_buffer[rx_len] = '\0'; 
+        
+        printf("Received (%d bytes): %s\r\n", rx_len, rx_buffer);
+        printf("RSSI: %d\r\n", SX1278_RSSI_LoRa(&SX1278)); // Signal Strength
+
+        HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13); // Toggle LED on receive
+    }
+    
+    HAL_Delay(10); // Small delay to prevent MCU freeze
+}
