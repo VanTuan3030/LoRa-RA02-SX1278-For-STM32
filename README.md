@@ -61,6 +61,10 @@ Place this under `/* USER CODE BEGIN Includes */`:
 SX1278_hw_t SX1278_hw;
 SX1278_t SX1278;
 
+### 2. Initialization
+
+Place this inside the main() function, before the while(1) loop:
+
 /* Hardware pin configuration for the library */
 SX1278_hw.dio0.port = GPIOB;
 SX1278_hw.dio0.pin = GPIO_PIN_1;
